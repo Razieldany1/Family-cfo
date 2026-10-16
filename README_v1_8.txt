@@ -1,0 +1,1 @@
+FAMILY CFO v1.8 — grafico unico liquidità libera nella Panoramica. Selettore giornaliero/mensile. I dati esistenti IndexedDB restano invariati. Prima di aggiornare, esportare backup JSON. Verificare saldi e trasferimenti sul dispositivo.
