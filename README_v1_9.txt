@@ -1,0 +1,1 @@
+FAMILY CFO v1.9: dashboard con due grafici (liquidità libera e spese per categoria); nuova scheda Categorie per creazione, rinomina, eliminazione. Prima di aggiornare esportare backup JSON. Nessuna modifica automatica ai saldi o ai movimenti.
