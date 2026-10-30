@@ -54,22 +54,22 @@ function cashBalanceAt(date){
  return Number(free?.opening||0)+sum(state.transactions.filter(t=>t.date>=CASH_BASELINE&&t.date<=date).map(cashFlowDelta));
 }
 function cashSeries(period,mode){
- const [year,mon]=period.split('-').map(Number);
  const today=todayLocal();
  if(mode==='daily'){
-   const days=new Date(year,mon,0).getDate();
-   const start=period===CASH_BASELINE.slice(0,7)?15:1;
-   return Array.from({length:days-start+1},(_,i)=>{
-     const date=`${period}-${String(i+start).padStart(2,'0')}`;
-     return {date,label:String(i+1),value:date>=CASH_BASELINE&&date<=today?cashBalanceAt(date):null};
-   });
+   const range=financialRange(period),start=new Date(range.start+'T12:00:00'),end=new Date(range.end+'T12:00:00');
+   const data=[];
+   for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+     const date=localISO(d);
+     data.push({date,label:String(d.getDate()),value:date>=CASH_BASELINE&&date<=today?cashBalanceAt(date):null});
+   }
+   return data;
  }
+ const [year,mon]=period.split('-').map(Number);
  return Array.from({length:12},(_,i)=>{
-   const d=new Date(year,mon-12+i+1,1),y=d.getFullYear(),m=d.getMonth()+1;
-   const key=`${y}-${String(m).padStart(2,'0')}`;
-   const end=`${key}-${String(new Date(y,m,0).getDate()).padStart(2,'0')}`;
-   const date=end>today?today:end;
-   return {date:key,label:`${String(m).padStart(2,'0')}/${String(y).slice(2)}`,value:date>=CASH_BASELINE&&key<=today.slice(0,7)?cashBalanceAt(date):null};
+   const key=localISO(new Date(year,mon-12+i,1)).slice(0,7);
+   const range=financialRange(key);
+   const date=range.end>today?today:range.end;
+   return {date,label:key.slice(5)+'/'+key.slice(2,4),value:date>=range.start&&date>=CASH_BASELINE&&date<=today?cashBalanceAt(date):null};
  });
 }
 function temporalChart(period,mode){

@@ -1,0 +1,1 @@
+FAMILY CFO v2.4.2: grafico liquidità allineato ai periodi finanziari 27-26, inclusi punti validi dal 15/10/2026; aggiornamento cache offline. Backup JSON prima di aggiornare. Nessuna migrazione del database.
