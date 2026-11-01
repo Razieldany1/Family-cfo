@@ -169,3 +169,12 @@ button:focus-visible,nav button:focus-visible{outline:3px solid #0d9488;outline-
 .fc-event-list{padding:0 8px}.fc-event{display:flex;gap:10px;justify-content:space-between;align-items:start;padding:10px 0;border-top:1px solid var(--border,#e4e9ec);font-size:13px}.fc-event span{min-width:0;overflow-wrap:anywhere}.fc-event small{display:block;opacity:.65;font-size:11px;margin-top:3px}.fc-event>b{white-space:nowrap;font-size:13px}
 .fc-secondary{margin:12px 0;border:1px solid var(--border,#dce4e8);border-radius:14px;padding:10px}.fc-secondary>summary{cursor:pointer;font-weight:700;padding:8px;list-style:revert}.fc-secondary>.card{margin-top:10px}
 @media(max-width:380px){.fc-totals{font-size:12px}.fc-period strong{font-size:13px}}
+
+/* v3.3 visual privacy and December salary */
+.privacy-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+#privacyToggle{font-size:12px;padding:8px 9px;border-radius:9px;white-space:nowrap}
+.privacy-hidden #view input[type="number"],.privacy-hidden #view input[type="month"]{ -webkit-text-security:disc; filter:blur(5px)}
+.privacy-hidden #view svg text{opacity:0}
+.fc-bonus{border:1px solid var(--border,#dce4e8);border-radius:10px;margin:14px 0;padding:12px}
+.fc-bonus legend{font-weight:700}
+@media(max-width:410px){header .privacy-controls #status{display:none}#privacyToggle{font-size:11px}}
