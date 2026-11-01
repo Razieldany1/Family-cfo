@@ -1,0 +1,1 @@
+FAMILY CFO 3.2 — Previsioni compatte per mese finanziario. Mesi e settimane espandibili; impostazioni, simulazione e calendario analitico richiudibili. Nessuna modifica al motore contabile o allo schema backup. Eseguire backup e confrontare i valori con v3.1 prima di usare la nuova versione.

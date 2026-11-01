@@ -156,3 +156,16 @@ button:focus-visible,nav button:focus-visible{outline:3px solid #0d9488;outline-
 .forecast-week-body{padding:0 12px 10px;border-top:1px solid var(--border,#d6dce2)}
 .forecast-week-body .entry{margin:8px 0}
 @media(max-width:420px){.forecast-week>summary{gap:7px;padding:10px}.forecast-week-totals{font-size:13px}}
+
+/* v3.2: progressive disclosure on the forecast screen */
+.fc-month,.fc-week{border:1px solid var(--border,#dce4e8);border-radius:13px;margin:9px 0;overflow:hidden}
+.fc-month>summary,.fc-week>summary{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 10px;cursor:pointer;list-style:none}
+.fc-month>summary::-webkit-details-marker,.fc-week>summary::-webkit-details-marker{display:none}
+.fc-month>summary:before,.fc-week>summary:before{content:'▸';flex:none;color:#64748b}
+.fc-month[open]>summary:before,.fc-week[open]>summary:before{content:'▾'}
+.fc-period{min-width:0;flex:1;display:block}.fc-period strong{font-size:15px}.fc-period small{display:block;font-size:11px;opacity:.72;margin-top:3px}
+.fc-totals{display:flex;flex-direction:column;align-items:flex-end;white-space:nowrap;font-size:13px;font-variant-numeric:tabular-nums;gap:2px}.fc-totals small{font-size:11px;opacity:.8}
+.fc-month-body{padding:0 8px 8px}.fc-week{margin:7px 0;background:var(--card,#fff)}.fc-week>summary{padding:10px 8px}
+.fc-event-list{padding:0 8px}.fc-event{display:flex;gap:10px;justify-content:space-between;align-items:start;padding:10px 0;border-top:1px solid var(--border,#e4e9ec);font-size:13px}.fc-event span{min-width:0;overflow-wrap:anywhere}.fc-event small{display:block;opacity:.65;font-size:11px;margin-top:3px}.fc-event>b{white-space:nowrap;font-size:13px}
+.fc-secondary{margin:12px 0;border:1px solid var(--border,#dce4e8);border-radius:14px;padding:10px}.fc-secondary>summary{cursor:pointer;font-weight:700;padding:8px;list-style:revert}.fc-secondary>.card{margin-top:10px}
+@media(max-width:380px){.fc-totals{font-size:12px}.fc-period strong{font-size:13px}}

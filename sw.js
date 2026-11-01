@@ -1,5 +1,5 @@
 // v2.4.5.1: network-first for online updates, offline cache fallback.
-const CACHE='family-cfo-v3-1';
+const CACHE='family-cfo-v3-2';
 const FILES=['./','./index.html','./style.css','./app.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));
