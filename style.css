@@ -1,5 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
 :root{font-family:'DM Sans',system-ui,-apple-system,Roboto,sans-serif;color:#17263c;background:#f5f7fb;font-synthesis:none}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% 0%,#e9f2f5 0%,transparent 34%),#f5f7fb}
@@ -130,3 +129,17 @@ button:focus-visible,nav button:focus-visible{outline:3px solid #0d9488;outline-
 .cfo-prudent-details summary{cursor:pointer;font-weight:700;padding:6px 0}
 .cfo-prudent-details .row{gap:12px;margin:12px 0}
 .cfo-prudent-details .row strong{text-align:right;white-space:nowrap}
+
+/* FAMILY CFO 3.0 · concise reconciliation, scenarios and calendar */
+.cfo-v3-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.cfo-v3-kpis>div{border-radius:14px;padding:12px;background:#f0f6f6;display:flex;flex-direction:column;gap:7px;min-width:0}
+.cfo-v3-kpis small{font-size:11px;font-weight:700;color:#627789}
+.cfo-v3-kpis strong{font-size:clamp(17px,3.2vw,23px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.cfo-v3-actions{display:flex;gap:9px;flex-wrap:wrap;margin:4px 0 16px}
+.cfo-v3-actions button{flex:1;min-width:130px}
+.cfo-calendar-group{border:1px solid #dce7eb;border-radius:14px;padding:10px 13px;margin:12px 0}
+.cfo-calendar-group summary{font-weight:800;cursor:pointer;padding:8px 1px}
+.cfo-calendar-event{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #e7eff2;font-size:12px}
+.cfo-calendar-event strong{font-variant-numeric:tabular-nums;white-space:nowrap}
+.cfo-v3-strip{background:#eef6f5;border-radius:10px;font-size:12px;line-height:1.8;padding:10px;margin-top:12px}
+@media(max-width:600px){.cfo-v3-actions{gap:7px}.cfo-calendar-event{align-items:flex-start}.cfo-calendar-event span{min-width:0;overflow-wrap:anywhere}}

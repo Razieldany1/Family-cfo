@@ -1,0 +1,36 @@
+FAMILY CFO 3.0.0 — Rapporto di verifica (1 novembre 2026)
+
+BASE: archivio FAMILY_CFO_v2_5_0_Disponibilita_Prudenziale.zip.
+
+TEST AUTOMATICI DEL MOTORE: 30/30 SUPERATI
+- Confini mese finanziario 26/27, incluso passaggio dicembre/gennaio
+- Patrimonio degli adulti e dei figli separati e trasferimenti interni senza doppio conteggio
+- Calcolo risparmio registrato; passaggio tra fondi patrimoniali neutro
+- Copertura assicurazione 200/280 e singolo versamento utile
+- Budget negativo non mascherato come zero
+- Scenari di simulazione non modificano le transazioni
+- Disponibilità previsione di default senza eventi automatici
+- Riconciliazione manuale non modifica i saldi reali
+- Rilevazione e mancata eliminazione automatica di possibili duplicati
+- Validazione backup: vieta importi negativi, trasferimenti identici, date inesistenti
+- Compatibilità del JSON storico (version:1), proprietà aggiuntiva v3 opzionale
+
+TEST INTERFACCIA CON BROWSER HEADLESS: SUPERATI SU DATI SINTETICI
+- Panoramica, Budget, Previsioni, Fondi, Riconciliazione, Dati
+- Inserimento manuale saldo di verifica
+- Nessun errore JavaScript in queste viste
+- Simulazioni a 3, 6, 12 mesi e calendario visibili
+
+LIMITI DELLA VERIFICA
+- Il browser ha usato un database emulato, non il database reale dell'Android.
+- NON è stato eseguito un collaudo end-to-end del service worker su GitHub Pages.
+- NON è stato verificato il backup personale dell'utente; non era allegato a questo turno.
+- La simulazione 3/6/12 mesi non è una previsione bancabile: non accredita le mensilità extra e presume entrate/spese ordinarie mensili costanti.
+- L'utente deve esportare il backup JSON e confrontare i saldi dopo l'installazione.
+
+PRECAUZIONI
+1. Tenere installata e funzionante la v2.5.0 fino al collaudo della v3.0.
+2. Esportare un backup JSON dalla v2.5.0, conservarlo fuori dal telefono.
+3. NON disinstallare la PWA né cancellare archiviazione e dati del sito.
+4. Dopo l'aggiornamento confrontare tutti i saldi, poi testare i report e un trasferimento.
+5. Confrontare il backup importato prima di registrare altri movimenti.
