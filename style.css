@@ -143,3 +143,16 @@ button:focus-visible,nav button:focus-visible{outline:3px solid #0d9488;outline-
 .cfo-calendar-event strong{font-variant-numeric:tabular-nums;white-space:nowrap}
 .cfo-v3-strip{background:#eef6f5;border-radius:10px;font-size:12px;line-height:1.8;padding:10px;margin-top:12px}
 @media(max-width:600px){.cfo-v3-actions{gap:7px}.cfo-calendar-event{align-items:flex-start}.cfo-calendar-event span{min-width:0;overflow-wrap:anywhere}}
+
+/* v3.1 — eventi previsionali raggruppati, senza cambiare i calcoli */
+.forecast-week{border:1px solid var(--border,#d6dce2);border-radius:12px;margin:10px 0;overflow:hidden}
+.forecast-week>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;cursor:pointer;list-style:none}
+.forecast-week>summary::-webkit-details-marker{display:none}
+.forecast-week>summary:before{content:'▸';font-size:14px;flex:none}
+.forecast-week[open]>summary:before{content:'▾'}
+.forecast-week>summary>span:first-of-type{flex:1;min-width:0}
+.forecast-week summary small{display:block;opacity:.7;font-size:12px;margin-top:4px;overflow-wrap:anywhere}
+.forecast-week-totals{text-align:right;display:flex;flex-direction:column;gap:2px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.forecast-week-body{padding:0 12px 10px;border-top:1px solid var(--border,#d6dce2)}
+.forecast-week-body .entry{margin:8px 0}
+@media(max-width:420px){.forecast-week>summary{gap:7px;padding:10px}.forecast-week-totals{font-size:13px}}
