@@ -158,7 +158,7 @@ function forecastExpenseDates(period,preferred){
 }
 function forecastExpenseSlices(period,category,amount,start,end,preferred){
  const dates=forecastExpenseDates(period,preferred).filter(d=>d>start&&d<=end);
- if(!dates.length)return [];
+ if(!dates.length){const lastDay=monthDay(period,31);const next=datePlus(start,1);if(next.slice(0,7)===period&&next<=end&&next<=lastDay)return [{date:next,amount:Math.round(amount*100)/100}];return [];}
  // Distribute the unspent monthly allowance over remaining checkpoints.
  // The final checkpoint absorbs rounding differences.
  const cents=Math.round(amount*100),base=Math.floor(cents/dates.length);
@@ -273,6 +273,7 @@ function auditLedger(){
   const r=refs[a.id],has=r&&Number.isFinite(Number(r.amount))&&isISODate(r.date);const actual=has?FamilyLedger.balanceAt(state.accounts,state.transactions,a.id,r.date):bal(a.id);
   return {id:a.id,name:a.name,book:actual,actual:has?money2(r.amount):null,date:has?r.date:'',difference:has?money2(Number(r.amount)-actual):null};
  });
+ for(const [id,ref] of Object.entries(refs))if(ref&&!isISODate(ref.date))issues.push('Verifica senza data valida: '+id);
  const checked=rows.filter(x=>x.actual!==null);
  return {issues,dupes,nonCash,rows,checked,discrepancies:checked.filter(x=>Math.abs(x.difference)>=.01)};
 }
