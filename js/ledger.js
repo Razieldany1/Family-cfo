@@ -20,8 +20,8 @@ function balanceAt(accounts, transactions, id, date = '9999-12-31') {
   if (!account) throw new Error('Conto sconosciuto: ' + id);
   let total = cents(account.opening || 0);
   for (const t of transactions) {
-    if (t.date > date) continue;
     assertTransaction(t);
+    if (t.date > date) continue;
     if (t.to === id) total += cents(t.amount);
     if (t.from === id) total -= cents(t.amount);
   }
@@ -43,4 +43,6 @@ function financialRange(key) {
   const iso = d => d.toISOString().slice(0, 10);
   return {start: iso(new Date(Date.UTC(y, m - 2, 27))), end: iso(new Date(Date.UTC(y, m - 1, 26)))};
 }
-module.exports = { cents, assertTransaction, balanceAt, reconcileAt, financialKey, financialRange };
+const api={cents,assertTransaction,balanceAt,reconcileAt,financialKey,financialRange};
+if(typeof module!=='undefined'&&module.exports)module.exports=api;
+if(typeof window!=='undefined')window.FamilyLedger=api;
