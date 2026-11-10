@@ -188,7 +188,7 @@ function forecastEvents(start,end){
    const remaining=Math.max(0,Number(monthly)-paid);
    if(remaining>0)for(const [i,part] of forecastExpenseSlices(period,category,remaining,start,end,f.expenseDay).entries())add({id:`expense-${period}-${category}-${i}`,date:part.date,kind:'expense',label:`Budget residuo: ${category}`,from:'free',amount:part.amount});
   }
-  if(f.allocationsEnabled)for(const event of FamilyForecast.allocationEvents(period,state.accounts,state.transactions,Math.max(1,Math.min(28,Number(f.allocationDay)||28))))add(event);
+  if(f.allocationsEnabled)for(const event of FamilyForecast.allocationEvents(period,state.accounts,state.transactions,Math.max(1,Math.min(28,Number(f.allocationDay)||28)),state.allocations))add(event);
   m++;if(m>12){m=1;y++}
  }
  if(f.deadlineEnabled)for(const d of state.deadlines){if(d.done||!d.date||!Number.isFinite(Number(d.amount))||Number(d.amount)<=0)continue;
