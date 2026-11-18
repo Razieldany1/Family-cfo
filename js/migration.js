@@ -16,6 +16,7 @@
   for(const t of copy.transactions){if(t.from)t.from=rename(t.from);if(t.to)t.to=rename(t.to)}
   for(const d of copy.deadlines)d.account=rename(d.account);
   for(const q of copy.quickFavorites||[]){if(q.from)q.from=rename(q.from);if(q.to)q.to=rename(q.to)}
+  if(copy.v3?.reconciliation)copy.v3.reconciliation=Object.fromEntries(Object.entries(copy.v3.reconciliation).map(([id,v])=>[rename(id),v]));
   copy.schemaVersion=schema;
   if(!validate(copy))throw Error('Riferimenti contabili non validi dopo migrazione');
   const balance=(o,id)=>o.transactions.reduce((n,t)=>n+(t.to===id?Math.round(t.amount*100):0)-(t.from===id?Math.round(t.amount*100):0),Math.round(o.accounts.find(a=>a.id===id).opening*100));
