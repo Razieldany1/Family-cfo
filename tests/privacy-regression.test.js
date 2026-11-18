@@ -15,17 +15,17 @@ test('fresh initialization contains no prefilled balances or personal budget',()
  assert.equal(initial.transactions.length,0);
 });
 test('forecast preserves saved account label allocations',()=>{
- const accounts=[{id:'free',name:'Conto'},{id:'leo',name:'Risparmi Test A',goal:{monthly:0}},{id:'bianca',name:'Risparmi Test B',goal:{monthly:0}}];
+ const accounts=[{id:'free',name:'Conto'},{id:'child_1',name:'Risparmi Test A',goal:{monthly:0}},{id:'child_2',name:'Risparmi Test B',goal:{monthly:0}}];
  const events=forecast.allocationEvents('2026-11',accounts,[],28,[['Risparmi Test A',71],['Risparmi Test B',83]]);
  assert.deepEqual(events.map(e=>e.amount),[71,83]);
 });
 test('forecast supports neutral account labels',()=>{
- const accounts=[{id:'leo',name:'Risparmi figlio 1'},{id:'bianca',name:'Risparmi figlio 2'}];
+ const accounts=[{id:'child_1',name:'Risparmi figlio 1'},{id:'child_2',name:'Risparmi figlio 2'}];
  assert.deepEqual(forecast.allocationEvents('2026-11',accounts,[],28,[['Risparmi figlio 1',51],['Risparmi figlio 2',62]]).map(e=>e.amount),[51,62]);
 });
 test('planned savings preserves saved account labels',()=>{
  const line=source.split('\n').find(l=>l.startsWith('function savingsBreakdown()'));
- const state={accounts:[{id:'leo',name:'Risparmi Test A'},{id:'bianca',name:'Risparmi Test B'}],allocations:[['Risparmi Test A',71],['Risparmi Test B',83]],incomeMonthly:1000};
+ const state={accounts:[{id:'child_1',name:'Risparmi Test A'},{id:'child_2',name:'Risparmi Test B'}],allocations:[['Risparmi Test A',71],['Risparmi Test B',83]],incomeMonthly:1000};
  const result=vm.runInNewContext(line+'\nsavingsBreakdown()', {state,sum:a=>a.reduce((s,x)=>s+x,0)});
  assert.equal(result.savings,154);
 });
