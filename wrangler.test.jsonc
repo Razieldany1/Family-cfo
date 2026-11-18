@@ -1,5 +1,7 @@
 {
   "name": "family-cfo-test",
+  "workers_dev": false,
+  "preview_urls": false,
   "compatibility_date": "2026-11-18",
   "assets": {
     "directory": "./dist-cloudflare-test",
