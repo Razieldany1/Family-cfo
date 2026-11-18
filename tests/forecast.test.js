@@ -13,3 +13,6 @@ test('accantonamenti residui non mutano dati',()=>{
  const snapshot=JSON.stringify({a,t}),e=allocationEvents('2026-12',a,t,28);
  assert.equal(e[0].amount,120);assert.equal(JSON.stringify({a,t}),snapshot);
 });
+
+test('accredito combinato descritto senza classificazione esplicita non viene duplicato',()=>assert.equal(incomeEvents('2026-12',[tx('Stipendio',2950,'Stipendio e tredicesima')],base).filter(e=>e.id.startsWith('salary')).length,0));
+test('fondo auto con pesi nulli non genera versamenti arbitrari',()=>{const a=[{id:'free'},{id:'insurance',name:'Assicurazione',goal:{monthly:0}},{id:'tax',name:'Bollo',goal:{monthly:0}}];assert.equal(allocationEvents('2026-12',a,[],28,[['Fondo auto complessivo',145]]).length,0);});
