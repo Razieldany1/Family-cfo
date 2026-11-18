@@ -2,8 +2,8 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),app=fs.readFileSync(path.join(root,'app.js'),'utf8'),html=fs.readFileSync(path.join(root,'index.html'),'utf8'),sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
 const {allocationEvents}=require('../js/forecast');
-test('browser loads accounting modules before app',()=>{assert.ok(html.indexOf('js/ledger.js')<html.indexOf('app.js'));assert.ok(html.indexOf('js/forecast.js')<html.indexOf('app.js'));});
-test('service worker caches new modules',()=>{assert.match(sw,/js\/ledger\.js/);assert.match(sw,/js\/forecast\.js/);assert.match(sw,/family-cfo-v3-4/);});
+test('browser loads accounting modules before app',()=>{assert.ok(html.indexOf('js/ledger.js')<html.indexOf('app.js'));assert.ok(html.indexOf('js/forecast.js')<html.indexOf('app.js'));assert.ok(html.includes('js/migration.js')&&html.indexOf('js/migration.js')<html.indexOf('app.js'));});
+test('service worker caches new modules',()=>{assert.match(sw,/js\/ledger\.js/);assert.match(sw,/js\/forecast\.js/);assert.match(sw,/js\/migration\.js/);assert.match(sw,/family-cfo-v3-4/);});
 test('UI uses accounting core for balances and dated reconciliation',()=>{assert.match(app,/function bal\(id\)\{return FamilyLedger\.balanceAt/);assert.match(app,/FamilyLedger\.balanceAt\(state\.accounts,state\.transactions,a\.id,r\.date\)/);});
 test('UI uses forecast core and configured allocation totals',()=>{assert.match(app,/FamilyForecast\.incomeEvents/);assert.match(app,/FamilyForecast\.allocationEvents\(period,state\.accounts,state\.transactions,[^\n]*state\.allocations\)/);});
 test('auto allocation total matches configured amount, not duplicated',()=>{
@@ -13,7 +13,7 @@ test('auto allocation total matches configured amount, not duplicated',()=>{
 });
 
 test('legacy backup import applies all non-destructive migrations before persisting',()=>{
- assert.match(app,/state=obj;try\{ensureGoals\(\);ensureForecast\(\);ensureInsights\(\);ensureV24\(\);ensureV3\(\);await save\(\)/);
+ assert.match(app,/state=prepared\.state;try\{ensureGoals\(\);ensureForecast\(\);ensureInsights\(\);ensureV24\(\);ensureV3\(\);await atomicRestore\(state,previous\)/);
 });
 test('backup validation rejects unknown account references and duplicate movement IDs',()=>{
  assert.match(app,/txIds\.has\(t\.id\)/);
