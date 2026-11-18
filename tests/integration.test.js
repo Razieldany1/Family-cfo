@@ -20,3 +20,17 @@ test('backup validation rejects unknown account references and duplicate movemen
  assert.match(app,/!ids\.has\(t\.from\)/);
  assert.match(app,/!ids\.has\(t\.to\)/);
 });
+
+test('legacy v3.3-style backup passes actual validation without altering movements',()=>{
+ const vm=require('node:vm');
+ const dateHelper=app.slice(app.indexOf('function isISODate(s){'),app.indexOf('function auditLedger(){'));
+ const validator=app.slice(app.indexOf('function valid(o){'),app.indexOf('function download(',app.indexOf('function valid(o){')));
+ const ctx=vm.createContext({});
+ vm.runInContext(dateHelper+'\n'+validator,ctx);
+ const fixture={version:1,accounts:[{id:'free',name:'Conto',opening:500},{id:'emergency',name:'Fondo',opening:2000}],transactions:[{id:'t1',date:'2026-10-27',type:'income',to:'free',amount:1600,category:'Stipendio'},{id:'t2',date:'2026-10-28',type:'transfer',from:'free',to:'emergency',amount:200,category:'Fondo'}],budget:[['Alimentari',300]],allocations:[['Fondo emergenza',200]],deadlines:[{id:'d1',date:'2026-12-15',amount:280,account:'emergency'}],incomeMonthly:1600};
+ const before=JSON.stringify(fixture);
+ assert.equal((ctx.fixture=fixture,vm.runInContext('valid(fixture)',ctx)),true);
+ assert.equal(JSON.stringify(fixture),before);
+ const invalid=structuredClone(fixture);invalid.transactions[1].id='t1';
+ assert.equal((ctx.fixture=invalid,vm.runInContext('valid(fixture)',ctx)),false);
+});
