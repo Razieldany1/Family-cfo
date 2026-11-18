@@ -11,3 +11,12 @@ test('auto allocation total matches configured amount, not duplicated',()=>{
  const events=allocationEvents('2026-12',a,[],28,[['Fondo auto complessivo',145]]);
  assert.equal(Math.round(events.reduce((s,e)=>s+e.amount,0)*100),14500);
 });
+
+test('legacy backup import applies all non-destructive migrations before persisting',()=>{
+ assert.match(app,/state=obj;try\{ensureGoals\(\);ensureForecast\(\);ensureInsights\(\);ensureV24\(\);ensureV3\(\);await save\(\)/);
+});
+test('backup validation rejects unknown account references and duplicate movement IDs',()=>{
+ assert.match(app,/txIds\.has\(t\.id\)/);
+ assert.match(app,/!ids\.has\(t\.from\)/);
+ assert.match(app,/!ids\.has\(t\.to\)/);
+});
