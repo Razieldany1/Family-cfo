@@ -17,7 +17,7 @@
  }
  function allocationEvents(period,accounts,transactions,day,allocations){
   const named=Object.fromEntries((allocations||[]).map(([name,value])=>[name,money(value)]));
-  const map={emergency:'Fondo emergenza',leo:'Risparmi figlio 1',bianca:'Risparmi figlio 2'};
+  const map={emergency:'Fondo emergenza',child_1:'Risparmi figlio 1',child_2:'Risparmi figlio 2'};
   const carIds=['insurance','tax','maintenance','car'];
   const carAccounts=accounts.filter(a=>carIds.includes(a.id));
   const carTotal=named['Fondo auto complessivo']===undefined?undefined:Math.max(0,named['Fondo auto complessivo']);
