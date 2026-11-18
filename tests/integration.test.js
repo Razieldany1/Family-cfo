@@ -34,3 +34,14 @@ test('legacy v3.3-style backup passes actual validation without altering movemen
  const invalid=structuredClone(fixture);invalid.transactions[1].id='t1';
  assert.equal((ctx.fixture=invalid,vm.runInContext('valid(fixture)',ctx)),false);
 });
+
+test('restore render failure preserves previous state and never writes',async()=>{
+ const vm=require('node:vm');
+ const source=app.slice(app.indexOf('async function restoreBackup(obj)'),app.indexOf('function valid(o)'));
+ const previous={marker:'previous'},next={marker:'next'};
+ let writes=0;
+ const ctx=vm.createContext({state:previous,valid:()=>true,backupMapping:()=>({}),FamilyMigration:{prepare:()=>({state:next,report:{movements:0,total:0,accounts:[]}})},privacyHidden:true,confirm:()=>true,ensureGoals(){},ensureForecast(){},ensureInsights(){},ensureV24(){},ensureV3(){},dashboard(){if(ctx.state===next)throw Error('render failed')},atomicRestore:async()=>{writes++},alert(){},console});
+ vm.runInContext(source,ctx);
+ await assert.rejects(vm.runInContext('restoreBackup({})',ctx),/render failed/);
+ assert.equal(ctx.state,previous);assert.equal(writes,0);
+});
