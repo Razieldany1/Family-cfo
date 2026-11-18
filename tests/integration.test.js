@@ -13,7 +13,7 @@ test('auto allocation total matches configured amount, not duplicated',()=>{
 });
 
 test('legacy backup import applies all non-destructive migrations before persisting',()=>{
- assert.match(app,/state=prepared\.state;try\{ensureGoals\(\);ensureForecast\(\);ensureInsights\(\);ensureV24\(\);ensureV3\(\);await atomicRestore\(state,previous\)/);
+ assert.match(app,/state=prepared\.state;try\{ensureGoals\(\);ensureForecast\(\);ensureInsights\(\);ensureV24\(\);ensureV3\(\);dashboard\(\);await atomicRestore\(state,previous\)/);
 });
 test('backup validation rejects unknown account references and duplicate movement IDs',()=>{
  assert.match(app,/txIds\.has\(t\.id\)/);
