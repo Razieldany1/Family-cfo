@@ -17,7 +17,7 @@
  }
  function allocationEvents(period,accounts,transactions,day,allocations){
   const named=Object.fromEntries((allocations||[]).map(([name,value])=>[name,money(value)]));
-  const map={emergency:'Fondo emergenza',leo:'Risparmi Leonardo',bianca:'Risparmi Bianca'};
+  const map={emergency:'Fondo emergenza',leo:'Risparmi figlio 1',bianca:'Risparmi figlio 2'};
   const carIds=['insurance','tax','maintenance','car'];
   const carAccounts=accounts.filter(a=>carIds.includes(a.id));
   const carTotal=named['Fondo auto complessivo']===undefined?undefined:Math.max(0,named['Fondo auto complessivo']);
@@ -27,7 +27,7 @@
    const part=carTotal===undefined?money(a.goal?.monthly):(weight===0?0:(i===carAccounts.length-1?carTotal-allocated:Math.round(carTotal*Math.max(0,money(a.goal?.monthly))/weight)));
    carPlan[a.id]=Math.max(0,part);allocated+=part;
   }
-  return accounts.filter(a=>a.id!=='free').map(a=>{const planned=map[a.id]&&named[map[a.id]]!==undefined?named[map[a.id]]:carPlan[a.id]!==undefined?carPlan[a.id]:money(a.goal?.monthly),paid=transactions.filter(t=>t.type==='transfer'&&t.from==='free'&&t.to===a.id&&t.date?.startsWith(period)).reduce((s,t)=>s+money(t.amount),0);return {id:'allocation-'+period+'-'+a.id,date:period+'-'+String(day||28).padStart(2,'0'),kind:'transfer',label:'Accantonamento '+a.name,from:'free',to:a.id,amount:Math.max(0,Math.max(0,planned)-paid)/100}}).filter(e=>e.amount>0);
+  return accounts.filter(a=>a.id!=='free').map(a=>{const planned=map[a.id]&&(named[map[a.id]]!==undefined||named[a.name]!==undefined)?(named[map[a.id]]??named[a.name]):carPlan[a.id]!==undefined?carPlan[a.id]:money(a.goal?.monthly),paid=transactions.filter(t=>t.type==='transfer'&&t.from==='free'&&t.to===a.id&&t.date?.startsWith(period)).reduce((s,t)=>s+money(t.amount),0);return {id:'allocation-'+period+'-'+a.id,date:period+'-'+String(day||28).padStart(2,'0'),kind:'transfer',label:'Accantonamento '+a.name,from:'free',to:a.id,amount:Math.max(0,Math.max(0,planned)-paid)/100}}).filter(e=>e.amount>0);
  }
  const api={incomeEvents,allocationEvents};if(typeof module!=='undefined'&&module.exports)module.exports=api;if(root)root.FamilyForecast=api;
 })(typeof window!=='undefined'?window:null);
