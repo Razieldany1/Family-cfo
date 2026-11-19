@@ -178,3 +178,6 @@ button:focus-visible,nav button:focus-visible{outline:3px solid #0d9488;outline-
 .fc-bonus{border:1px solid var(--border,#dce4e8);border-radius:10px;margin:14px 0;padding:12px}
 .fc-bonus legend{font-weight:700}
 @media(max-width:410px){header .privacy-controls #status{display:none}#privacyToggle{font-size:11px}}
+
+/* Mobile: existing Movimenti navigation replaces overlapping floating shortcut. */
+@media(max-width:600px){#quickFab{display:none}}
