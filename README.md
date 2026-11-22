@@ -8,8 +8,8 @@ PWA per il controllo contabile e finanziario familiare, con archiviazione locale
 - **PR #2**: bozza, da mantenere senza merge fino alla verifica completa e all'autorizzazione.
 
 ## Motore contabile
-I dati locali sono salvati nel database \`family-cfo\`, store \`state\`, chiave \`main\`.
-Si conserva lo schema principale \`version: 1, schemaVersion: 2\`, compatibile con i backup v3.4.2. Le funzioni introdotte sono **additive**, in \`state.analysis\`; nessuna migrazione riscrive automaticamente movimenti o saldi.
+I dati locali sono salvati nel database `family-cfo`, store `state`, chiave `main`.
+Si conserva lo schema principale `version: 1, schemaVersion: 2`, compatibile con i backup v3.4.2. Le funzioni introdotte sono **additive**, in `state.analysis`; nessuna migrazione riscrive automaticamente movimenti o saldi.
 
 I saldi derivano da importi iniziali e movimenti di entrata, uscita e trasferimento. I trasferimenti interni, compresi gli accantonamenti ai fondi, **non sono spese**, e non aumentano il patrimonio totale. Il pagamento dal fondo al destinatario finale viene registrato invece come spesa.
 
@@ -26,7 +26,7 @@ I saldi derivano da importi iniziali e movimenti di entrata, uscita e trasferime
 Gli investimenti esterni e il valore Eurofer non vengono mai letti automaticamente. Sono informazioni manuali e potenzialmente non aggiornate. Se già inclusi in un conto della PWA, non devono essere reinseriti per evitare doppi conteggi. Eurofer **non** è liquidità disponibile. Le scadenze non sono addebiti automatici.
 
 ## Test
-Richiede Node.js 22: \`npm run verify\` (controllo sintattico di tutti gli script e test automatici con dati sintetici). GitHub Actions usa lo stesso comando su push e PR.
+Richiede Node.js 22: `npm run verify` (controllo sintattico di tutti gli script e test automatici con dati sintetici). GitHub Actions usa lo stesso comando su push e PR.
 
 Il collaudo va completato su un'origine web **separata** da GitHub Pages, senza alterare IndexedDB della produzione. Non caricare backup familiari su repository GitHub, issue, Actions o server: importarli esclusivamente nel browser locale dell'ambiente di prova. Conservare un backup separato della v3.4.2.
 
