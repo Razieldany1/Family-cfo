@@ -4,7 +4,7 @@
  */
 (function(root){
  let selectedMonth='',selectedYear='',activeType='expense',selectedCategory='',selectedMacro='',editing='';
- const A=()=>root.FamilyAnalysis;
+ const A=()=>root?root.FamilyAnalysis:require('./analytics.js');
  const byId=id=>document.getElementById(id);
  const makeCard=(title,content)=>'<section class="card analysis-card"><h2>'+title+'</h2>'+content+'</section>';
  function sortGroups(groups){return Object.values(groups).sort((a,b)=>b.total-a.total||a.name.localeCompare(b.name,'it'));}
