@@ -19,7 +19,7 @@
  const isoMonth=(year,month)=>new Date(Date.UTC(year,month-1,1)).toISOString().slice(0,7);
  function shift(period,offset){if(!/^\d{4}-\d{2}$/.test(String(period)))throw Error('Mese non valido');const [y,m]=period.split('-').map(Number);if(m<1||m>12)throw Error('Mese non valido');return isoMonth(y,m+offset);}
  function periodOf(date,mode='financial'){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date)))return '';const [y,m,d]=date.split('-').map(Number);if(!m||m>12||d<1||d>31)return '';return mode==='calendar'?date.slice(0,7):isoMonth(y,m+(d>=27?1:0));}
- function periodRange(period,mode='financial'){const [y,m]=period.split('-').map(Number);if(mode==='calendar'){return {start:period+'-01',end:new Date(Date.UTC(y,m,0)).toISOString().slice(0,10)};}return {start:shift(period,-2)+'-27',end:shift(period,-1)+'-26'};}
+ function periodRange(period,mode='financial'){const [y,m]=period.split('-').map(Number);if(mode==='calendar'){return {start:period+'-01',end:new Date(Date.UTC(y,m,0)).toISOString().slice(0,10)};}return {start:shift(period,-1)+'-27',end:period+'-26'};}
  function category(t){return String(t.category||'').trim()||'Senza categoria';}
  function normalizedNote(t){return String(t.note||'').toLocaleLowerCase('it').trim().replace(/\s+/g,' ').replace(/[^\p{L}\p{N} ]/gu,'');}
  function macroFor(name,custom){if(custom&&MACROS.includes(custom[name]))return custom[name];for(const [pattern,macro] of EXPENSE_HINTS)if(pattern.test(name))return macro;return 'Altre spese';}
