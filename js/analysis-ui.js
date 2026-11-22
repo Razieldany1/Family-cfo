@@ -76,7 +76,7 @@
   if((activeType==='expense'||activeType==='income')&&selectedCategory){
     const group=byCategory.find(g=>g.name===selectedCategory);
     if(group){
-      html+=makeCard('Dettaglio · '+ctx.esc(selectedCategory),
+      html+='<div id="anDetail">'+makeCard('Dettaglio · '+ctx.esc(selectedCategory),
        '<div class="row"><strong>'+group.count+' movimenti</strong><strong>'+money(ctx,group.total)+'</strong></div>'+
        group.transactions.map(t=>'<div class="analysis-entry"><div class="row"><span><strong>'+ctx.esc(t.note||t.category||'Movimento')+'</strong><small>'+ctx.fmtDate(t.date)+' · '+ctx.esc(t.from||t.to||'')+'</small></span><strong>'+money(ctx,t.amount)+'</strong></div>'+
        '<div class="actions"><button type="button" data-an-edit="'+ctx.esc(t.id)+'">'+(editing===t.id?'Chiudi modifica':'Modifica')+'</button></div>'+
@@ -88,14 +88,14 @@
         (t.type==='expense'?'<div><label>Ripartizione economica (mesi)</label><input name="months" type="number" min="1" max="36" step="1" value="'+(a.accruals[t.id]?.months||1)+'"></div>'+
         '<div><label>Primo mese di competenza</label><input name="start" type="month" value="'+ctx.esc(a.accruals[t.id]?.start||eng.periodOf(t.date,mode))+'"></div>':'')+
         '</div><button class="primary" type="submit">Salva modifica</button><p class="muted">Una ripartizione modifica solo il report di competenza, non il pagamento né il saldo. Cambiare data o importo modifica il registro contabile.</p></form>':'')+'</div>').join('')+
-       '<button type="button" id="anCloseCategory">Torna alle categorie</button>');
+       '<button type="button" id="anCloseCategory">Torna alle categorie</button>')+'</div>';
     }
   }
   const series=eng.series(ctx.state,selectedMonth,mode,12),max=Math.max(1,...series.map(x=>x.expense));
   const avgs=eng.averages(ctx.state,selectedMonth,mode);
   html+=makeCard('Confronto temporale e budget',
    '<div class="analysis-kpis"><div><small>Mese precedente</small><strong>'+(compare.comparable?money(ctx,compare.past.expense):'Dati insufficienti')+'</strong></div><div><small>Variazione della spesa</small><strong>'+(compare.comparable?money(ctx,compare.delta)+(compare.percentage===null?'':' ('+compare.percentage.toFixed(1)+'%)'):'—')+'</strong></div></div>'+
-   '<div class="analysis-spark">'+series.map(x=>'<button type="button" data-an-month="'+ctx.esc(x.period)+'" title="'+ctx.esc(x.period)+' · '+money(ctx,x.expense)+'"><span style="height:'+Math.max(2,Math.round(x.expense/max*100))+'%"></span><small>'+ctx.esc(x.period.slice(5))+'</small></button>').join('')+'</div>'+
+   '<div class="analysis-spark">'+series.map(x=>'<button type="button" data-an-month="'+ctx.esc(x.period)+'" title="'+ctx.esc(x.period)+'"><span style="height:'+Math.max(2,Math.round(x.expense/max*100))+'%"></span><small>'+ctx.esc(x.period.slice(5))+'</small></button>').join('')+'</div>'+
    '<p class="muted">Spesa registrata per mese finanziario o solare. L\'assenza di movimenti può indicare storico incompleto.</p>'+
    '<div class="analysis-averages">'+avgs.map(v=>'<div><strong>'+v.months+' mesi</strong><span>'+money(ctx,v.avgExpense)+'/mese</span><small>'+v.observed+'/'+v.months+' mesi con movimenti'+(v.complete?'':' · storico parziale')+'</small></div>').join('')+'</div>'+
    '<div class="report-scroll"><table class="report-table"><thead><tr><th>Categoria</th><th>Budget</th><th>Spesa</th><th>Residuo</th></tr></thead><tbody>'+
@@ -151,6 +151,7 @@
    '<p class="muted">Il trasferimento netto verso emergenza e figli è distinto dal margine entrate–spese. Non include variazioni di mercato, rendimenti né il TFR.</p>');
   const cats=[...new Set([...ctx.categories('expense'),...allExpenses.map(g=>g.name)])];
   html+=makeCard('Preferenze analisi e dati manuali',
+   ctx.privacyHidden?'<p class="muted">Modalità privacy attiva. Usa Mostra importi per configurare dati manuali e macroaree.</p>':
    '<details><summary>Configura macroaree, spese irregolari e indicatori</summary><form id="anConfig">'+
    '<p class="muted">La classificazione qui non cambia le categorie originali dei movimenti. È solo un raggruppamento analitico.</p>'+
    '<div class="report-scroll"><table class="report-table"><thead><tr><th>Categoria</th><th>Macroarea</th><th>Irregolare</th></tr></thead><tbody>'+
@@ -175,10 +176,10 @@
   byId('anYear').onchange=e=>{const n=Number(e.target.value);if(n>=2000&&n<=2100){selectedYear=String(n);render(ctx);}};
   byId('anExport').onclick=()=>exportCsv(ctx,selectedMonth,a.periodMode);
   byId('anNewMove').onclick=()=>ctx.setTab('movements');
-  document.querySelectorAll('[data-an-matrix-month]').forEach(b=>b.onclick=()=>{selectedMonth=b.dataset.anMatrixMonth;selectedCategory=b.dataset.anMatrixCat;activeType='expense';selectedMacro='';editing='';render(ctx);});
+  document.querySelectorAll('[data-an-matrix-month]').forEach(b=>b.onclick=()=>{selectedMonth=b.dataset.anMatrixMonth;selectedCategory=b.dataset.anMatrixCat;activeType='expense';selectedMacro='';editing='';render(ctx);byId('anDetail')?.scrollIntoView({block:'start'});});
   document.querySelectorAll('[data-an-month]').forEach(b=>b.onclick=()=>{selectedMonth=b.dataset.anMonth;selectedYear=selectedMonth.slice(0,4);selectedCategory='';editing='';render(ctx);});
   document.querySelectorAll('[data-an-type]').forEach(b=>b.onclick=()=>{activeType=b.dataset.anType;selectedCategory='';selectedMacro='';editing='';render(ctx);});
-  document.querySelectorAll('[data-an-cat]').forEach(b=>b.onclick=()=>{selectedCategory=b.dataset.anCat;editing='';render(ctx);byId('anCloseCategory')?.scrollIntoView({block:'nearest'});});
+  document.querySelectorAll('[data-an-cat]').forEach(b=>b.onclick=()=>{selectedCategory=b.dataset.anCat;editing='';render(ctx);byId('anDetail')?.scrollIntoView({block:'start'});});
   document.querySelectorAll('[data-an-macro]').forEach(b=>b.onclick=()=>{selectedMacro=b.dataset.anMacro===selectedMacro?'':b.dataset.anMacro;selectedCategory='';render(ctx);});
   if(byId('anClearMacro'))byId('anClearMacro').onclick=()=>{selectedMacro='';render(ctx);};
   if(byId('anCloseCategory'))byId('anCloseCategory').onclick=()=>{selectedCategory='';editing='';render(ctx);};
@@ -206,7 +207,7 @@
    if(!confirm('Assegnare la categoria '+suggestion.name+' a questo singolo movimento?'))return;
    const old=t.category;t.category=suggestion.name;try{await ctx.save();render(ctx);}catch(err){t.category=old;alert(err.message);}
   });
-  byId('anConfig').onsubmit=async e=>{
+  if(byId('anConfig'))byId('anConfig').onsubmit=async e=>{
    e.preventDefault();const f=new FormData(e.target),old=JSON.parse(JSON.stringify(ctx.state.analysis));
    const groups={},irregular={};cats.forEach((name,i)=>{const macro=f.get('macro'+i);if(eng.MACROS.includes(macro))groups[name]=macro;if(f.has('irregular'+i))irregular[name]=true;});
    const value=k=>{const raw=f.get(k);return raw===''?null:Number(raw);};
