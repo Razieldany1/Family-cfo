@@ -1,0 +1,10 @@
+{
+  "name": "family-cfo",
+  "private": true,
+  "version": "3.4.2",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node --check app.js && node --check js/ledger.js && node --check js/forecast.js && node --check js/migration.js",
+    "verify": "npm run check && npm test"
+  }
+}
