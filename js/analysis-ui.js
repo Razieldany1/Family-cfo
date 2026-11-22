@@ -141,6 +141,7 @@
   const external=['investments','eurofer','debts'].map(val),canTotal=external.every(x=>x!==null&&Number.isFinite(x)&&x>=0);
   const net=balances.total+(external[0]||0)+(external[1]||0)-(external[2]||0);
   const essentials=valEssential(a,ctx);
+  const plannedSaving=ctx.savingsBreakdown?ctx.savingsBreakdown().savings:0;
   const emergencyAccount=ctx.state.accounts.find(x=>x.id==='emergency');
   const emergency=emergencyAccount?ctx.bal('emergency'):0;
   html+=makeCard('Patrimonio, fondo emergenza e risparmio',
@@ -148,6 +149,8 @@
    '<div class="row"><span>Patrimonio monitorato, al netto dei debiti</span><strong>'+(canTotal?money(ctx,net):'Parziale · integra i dati manuali')+'</strong></div>'+
    '<p class="muted">Saldi dei conti già registrati + investimenti esterni + Eurofer − debiti. Non duplicare capitali già inclusi nei conti. Eurofer non è liquidità immediatamente disponibile; i valori manuali sono aggiornati alla data indicata.</p>'+
    '<div class="row"><span>Risparmio trasferito nel mese</span><strong>'+money(ctx,s.saved)+'</strong></div>'+
+   '<div class="row"><span>Risparmio programmato (emergenza + figli)</span><strong>'+money(ctx,plannedSaving)+'</strong></div>'+
+   '<div class="row"><span>Trasferito / entrate registrate</span><strong>'+(s.income>0?(s.saved/s.income*100).toFixed(1)+'%':'—')+'</strong></div>'+
    '<p class="muted">Il trasferimento netto verso emergenza e figli è distinto dal margine entrate–spese. Non include variazioni di mercato, rendimenti né il TFR.</p>');
   const cats=[...new Set([...ctx.categories('expense'),...allExpenses.map(g=>g.name)])];
   html+=makeCard('Preferenze analisi e dati manuali',
