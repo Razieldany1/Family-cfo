@@ -65,6 +65,14 @@
       }).join('')+'</div>'
     :'<div class="analysis-categories">'+entries.map(t=>'<div class="analysis-cat"><span>'+ctx.esc(t.note||t.category||'Movimento')+'<small>'+ctx.fmtDate(t.date)+' · '+(t.type==='transfer'?ctx.esc(t.from)+' → '+ctx.esc(t.to):'')+'</small></span><strong>'+money(ctx,t.amount)+'</strong></div>').join('')+'</div><p class="muted">'+(activeType==='savings'?'Versamenti verso riserva e conti figli: '+money(ctx,s.saveIn)+'; rientri: '+money(ctx,s.saveOut)+'; netto: '+money(ctx,s.saved)+'. Sono trasferimenti patrimoniali, non spese.':'Volume dei trasferimenti: '+money(ctx,s.transfer)+'. Non incluso nelle entrate e nelle spese.')+'</p>')+
    (!entries.length?'<p class="muted">Nessun movimento per il filtro selezionato.</p>':''));
+  const byNecessity={primaria:0,durevole:0,discrezionale:0};
+  for(const group of allExpenses){
+   const kind=ctx.expenseType(group.name);
+   if(Object.prototype.hasOwnProperty.call(byNecessity,kind))byNecessity[kind]+=group.total;
+  }
+  html+=makeCard('Tipologia delle uscite',
+   '<div class="analysis-kpis">'+Object.entries(byNecessity).map(([name,value])=>'<div><small>'+ctx.esc(name[0].toUpperCase()+name.slice(1))+'</small><strong>'+money(ctx,value)+'</strong><small>'+pct(value)+' del totale speso</small></div>').join('')+'</div>'+
+   '<p class="muted">La distinzione primaria/durevole/discrezionale segue la classificazione modificabile nella pagina Budget. Le macroaree sono una dimensione diversa, non un doppio conteggio.</p>');
   if((activeType==='expense'||activeType==='income')&&selectedCategory){
     const group=byCategory.find(g=>g.name===selectedCategory);
     if(group){
