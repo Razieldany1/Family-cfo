@@ -181,3 +181,52 @@ button:focus-visible,nav button:focus-visible{outline:3px solid #0d9488;outline-
 
 /* Mobile: existing Movimenti navigation replaces overlapping floating shortcut. */
 @media(max-width:600px){#quickFab{display:none}}
+
+
+/* v3.5 - analisi economica interattiva, gerarchia mobile-first */
+.analysis-card h3{font-size:13px;margin:18px 0 8px;color:#526577}
+.analysis-controls{display:flex;flex-wrap:wrap;gap:14px;align-items:end}
+.analysis-controls>div{display:flex;flex-direction:column;gap:5px;flex:1 1 160px}
+.analysis-controls input,.analysis-controls select{min-height:43px;max-width:100%;width:100%}
+.analysis-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}
+.analysis-kpis>div{display:flex;flex-direction:column;gap:8px;padding:13px;background:#f1f6f8;border:1px solid #e3eaef;border-radius:13px;min-width:0}
+.analysis-kpis small{color:#5b7185;font-size:11px}
+.analysis-kpis strong{font-size:clamp(15px,2.5vw,21px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.analysis-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:15px}
+.analysis-tabs button{flex:1 0 auto;font-size:12px;padding:9px}
+.analysis-macro{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:15px 0}
+.analysis-macro button{background:#f6f9fa;display:flex;align-items:center;justify-content:space-between;gap:7px;text-align:left;padding:12px;min-width:0}
+.analysis-macro button strong{white-space:nowrap;font-size:12px}
+.analysis-macro button.active{background:#087b70;color:white}
+.analysis-categories{display:flex;flex-direction:column;gap:7px}
+button.analysis-cat{width:100%;border:1px solid #e5ecf1;background:#f9fbfc;text-align:left}
+.analysis-cat{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px;border-bottom:1px solid #eff2f4;min-width:0}
+.analysis-cat>span:first-child{min-width:0;flex:1}
+.analysis-cat strong{font-size:13px}
+.analysis-cat small,.analysis-entry small{display:block;font-size:11px;color:#718094;font-weight:400;margin-top:4px}
+.analysis-cat .analysis-right{text-align:right;display:flex;flex-direction:column;gap:3px;max-width:48%}
+.analysis-cat .analysis-right strong{font-variant-numeric:tabular-nums}
+.analysis-entry{border-top:1px solid #e5ecf1;padding:12px 0}
+.analysis-entry .row{align-items:flex-start}
+.analysis-entry .row>span{min-width:0;overflow-wrap:anywhere}
+.analysis-edit{padding:12px;background:#f5f8fa;border-radius:12px}
+.analysis-spark{display:flex;gap:4px;align-items:end;justify-content:space-between;margin-top:15px;height:130px;border-bottom:1px solid #dbe5e9}
+.analysis-spark button{display:flex;align-items:center;justify-content:flex-end;flex-direction:column;height:100%;min-width:0;flex:1;padding:0 0 4px;background:transparent;border-radius:0;gap:3px}
+.analysis-spark button span{display:block;width:64%;min-height:2px;background:#15988e;border-radius:5px 5px 0 0}
+.analysis-spark button small{font-size:9px;color:#60788b}
+.analysis-averages{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0}
+.analysis-averages>div{padding:9px;background:#f6f9fb;border-radius:9px;min-width:0;display:flex;flex-direction:column;gap:4px}
+.analysis-averages span{font-weight:700;font-size:13px;overflow-wrap:anywhere}
+.analysis-averages small{color:#6f8094;font-size:10px}
+.analysis-card details{padding:10px 0}
+.analysis-card summary{cursor:pointer;font-weight:700;margin-bottom:10px}
+.analysis-card table select{max-width:170px;min-width:120px}
+.analysis-card table input[type=checkbox]{width:19px;height:19px}
+@media(max-width:600px){
+ .analysis-card{padding:16px}
+ .analysis-kpis,.analysis-macro{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .analysis-averages{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .analysis-spark button small{font-size:8px}
+ .analysis-macro button{font-size:11px;padding:10px}
+ .analysis-macro button strong{font-size:11px}
+}
