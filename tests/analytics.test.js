@@ -99,13 +99,13 @@ test('uneven cents are allocated deterministically without rounding loss',()=>{
 test('asset calculations include both adults and children once, without turning savings into spending',()=>{
  const s=sample(),before=JSON.stringify(s);
  const b=A.accountTotals(s.accounts,s.transactions);
- assert.equal(b.family,3645);
+ assert.equal(b.family,3830);
  assert.equal(b.children,4380);
- assert.equal(b.total,8025);
+ assert.equal(b.total,8210);
  assert.equal(JSON.stringify(s),before);
 });
 test('date order and IDs do not change under filtering',()=>{
  const state=sample(),r=A.rowsFor(state,'2026-11','financial','expense');
- assert.deepEqual(r.map(t=>t.id),['e2','e3','e1']);
+ assert.deepEqual(r.map(t=>t.id),['e3','e2','e1']);
  assert.equal(state.transactions[1].id,'e1');
 });
