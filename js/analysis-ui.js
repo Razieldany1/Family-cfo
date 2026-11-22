@@ -100,6 +100,18 @@
    years.map(x=>'<tr><td><button type="button" data-an-month="'+x.period+'">'+x.period+'</button></td><td>'+money(ctx,x.income)+'</td><td>'+money(ctx,x.expense)+'</td><td>'+money(ctx,x.margin)+'</td></tr>').join('')+
    '<tr><th>Totale registrato</th><th>'+money(ctx,totals.income)+'</th><th>'+money(ctx,totals.expense)+'</th><th>'+money(ctx,totals.margin)+'</th></tr></tbody></table></div>'+
    '<p class="muted">I totali annuali includono solo registrazioni disponibili, non proiezioni. Un anno parziale non rappresenta l\'intero costo annuale.</p>');
+  // Full year category x period matrix: each cell opens its exact month and category.
+  const byYear=years.map(x=>eng.summarize(ctx.state,x.period,mode));
+  const matrixNames=[...new Set(byYear.flatMap(x=>sortGroups(x.byCategory).filter(g=>g.type==='expense').map(g=>g.name)))];
+  matrixNames.sort((left,right)=>byYear.reduce((sum,x)=>sum+(x.byCategory['expense:'+right]?.total||0)-(x.byCategory['expense:'+left]?.total||0),0)||left.localeCompare(right,'it'));
+  html+=makeCard('Spese per categoria × mese',
+    '<p class="muted">Tocca un importo per vedere tutti i movimenti della categoria in quel mese. Scorri la tabella orizzontalmente su Android.</p>'+
+    (matrixNames.length?'<div class="report-scroll"><table class="report-table analysis-matrix"><thead><tr><th>Categoria</th>'+
+    years.map(x=>'<th>'+ctx.esc(x.period.slice(5))+'</th>').join('')+'<th>Totale</th></tr></thead><tbody>'+
+    matrixNames.map(name=>{
+     const values=byYear.map(x=>x.byCategory['expense:'+name]?.total||0),total=values.reduce((sum,value)=>sum+value,0);
+     return '<tr><th>'+ctx.esc(name)+'</th>'+values.map((value,i)=>'<td>'+(value?'<button type="button" data-an-matrix-month="'+years[i].period+'" data-an-matrix-cat="'+ctx.esc(name)+'">'+money(ctx,value)+'</button>':'—')+'</td>').join('')+'<th>'+money(ctx,total)+'</th></tr>';
+    }).join('')+'</tbody></table></div>':'<p class="muted">Nessuna spesa registrata per l’anno selezionato.</p>'));
   const recurring=eng.recurring(ctx.state,selectedMonth,mode);
   const uncategorized=s.rows.filter(t=>(t.type==='income'||t.type==='expense')&&eng.category(t)==='Senza categoria');
   html+=makeCard('Spese ricorrenti e categorie da correggere',
@@ -155,6 +167,7 @@
   byId('anYear').onchange=e=>{const n=Number(e.target.value);if(n>=2000&&n<=2100){selectedYear=String(n);render(ctx);}};
   byId('anExport').onclick=()=>exportCsv(ctx,selectedMonth,a.periodMode);
   byId('anNewMove').onclick=()=>ctx.setTab('movements');
+  document.querySelectorAll('[data-an-matrix-month]').forEach(b=>b.onclick=()=>{selectedMonth=b.dataset.anMatrixMonth;selectedCategory=b.dataset.anMatrixCat;activeType='expense';selectedMacro='';editing='';render(ctx);});
   document.querySelectorAll('[data-an-month]').forEach(b=>b.onclick=()=>{selectedMonth=b.dataset.anMonth;selectedYear=selectedMonth.slice(0,4);selectedCategory='';editing='';render(ctx);});
   document.querySelectorAll('[data-an-type]').forEach(b=>b.onclick=()=>{activeType=b.dataset.anType;selectedCategory='';selectedMacro='';editing='';render(ctx);});
   document.querySelectorAll('[data-an-cat]').forEach(b=>b.onclick=()=>{selectedCategory=b.dataset.anCat;editing='';render(ctx);byId('anCloseCategory')?.scrollIntoView({block:'nearest'});});
